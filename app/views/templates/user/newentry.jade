@@ -1,0 +1,15 @@
+.window.login
+  h1 新規登録
+  form(name="loginform",action="/")
+    p
+      label
+        ユーザーID:
+        input.getfocus(name="userid",size=20,required)
+    p
+      label
+        パスワード:
+        input(size="20",name="password",type="password",required)
+    p
+      input(type="submit",value="登録")
+
+

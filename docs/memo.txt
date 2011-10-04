@@ -1,0 +1,9 @@
+Database:
+users
+  {"userid":String,"password":String(Hashed)}
+
+
+[User]
+Client: SS.server.user.newentry query,callback
+query: {userid:String, password:String}
+https://github.com/brainfucker/hashlib
