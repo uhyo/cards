@@ -47,6 +47,11 @@ body > header #userinfo
 #userinfo menu
   margin:0
   display inline-block
+  
+#userinfo menu button
+  border none
+  background-color transparent
+  color #ffffff
 
 // window
 .window
@@ -54,7 +59,7 @@ body > header #userinfo
   border 1px solid #666666
   box-shadow 2px 2px 3px #000000
   margin 0
-  padding 0
+  padding 0 0.6em
   position absolute
   background-color rgba(240,240,240,0.7)
   
@@ -69,5 +74,16 @@ body > header #userinfo
   text-shadow #ffffff
   vertical-gradient rgba(255,255,255,0.4), rgba(255,255,255,0.6)
   
-form p
+.window form p
   text-align center
+  
+.error
+  color:#cc0000
+  
+//profile
+.profile form p.edit
+  min-height 1em
+  background-color #ddd
+  padding 3px 0
+.profile form input:not([type="submit"])
+  width 100%

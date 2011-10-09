@@ -1,15 +1,16 @@
-.window.login
+section.window.login
   h1 ログイン
   form(name="loginform",action="/")
     p
       label
         ユーザーID:
-        input.getfocus(size=20,required)
+        input.getfocus(name="userid",size=20,required)
     p
       label
         パスワード:
-        input(size="20",type="password",required)
+        input(name="password",size="20",type="password",required)
     p
       input(type="submit",value="ログイン")
+    p.error
 
 

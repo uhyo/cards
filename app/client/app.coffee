@@ -20,11 +20,26 @@ exports.init= ->
 	document.addEventListener "click",evclick,false
 	document.addEventListener "submit",evsubmit,false
 	
-	SS.server.app.init (mes)-> console.log mes
+	SS.client.app.page "templates-page-top",null
+	
+#	SS.server.app.init (mes)-> console.log mes
+
+	# ログイン
+	SS.events.on 'login', (message)->
+		loginuser message
+	
+exports.page=(templatename,params,pageobj)->
+	cdom=$("#content").get(0)
+	jQuery.data(cdom,"end")?()
+	jQuery.removeData cdom,"end"
+	$("#content").empty()
+	$("##{templatename}").tmpl(params).appendTo("#content")
+	if pageobj
+		pageobj.start()
+		jQuery.data cdom, "end", pageobj.end
 	
 evclick=(e)->
 	t=e.target
-	console.log t
 	if (menu=findParent t,((node)-> isTag(node,"menu"))) && (findParent menu,(node)-> node.id=="userinfo")
 		# 上メニューのコマンド
 		switch t.name
@@ -34,20 +49,50 @@ evclick=(e)->
 			when "newentry"
 				#新規登録
 				showWindow "templates-user-newentry"
-	console.log menu
+			when "logout"
+				#ログアウト
+				SS.server.user.logout (result)->
+					console.log result
+					SS.client.app.page "templates-page-top",null,null
+					$("#userinfo").empty()
+					$("#templates-upmenu-unlogin").tmpl().appendTo("#userinfo")
+					
 
+# 戻り値：jQuery
 showWindow= (templatename)->
 	x=Math.floor(Math.random()*100-200+document.documentElement.clientWidth/2)
 	y=Math.floor(Math.random()*100-200+document.documentElement.clientHeight/2)
 
-	console.log $("##{templatename}").tmpl().hide().css({left:"#{x}px",top:"#{y}px",}).appendTo("body").fadeIn()#.draggable()
+	win=$("##{templatename}").tmpl().hide().css({left:"#{x}px",top:"#{y}px",}).appendTo("body").fadeIn()#.draggable()
+	$(".getfocus",win).focus()
+
+#要素を含むWindowsを消す
+closeWindow= (node)->
+	w=$(node).closest(".window")
+	w.hide "normal",-> w.remove()
 	
 evsubmit=(e)->
 	form=e.target
+	e.preventDefault()
 	switch form.name
-	#	when "login"
-			# ログイン
-			#SS.server.
-		when "newentry"
+		when "loginform"
+			#ログイン
+			SS.server.user.login {userid: form.elements["userid"].value, password: form.elements["password"].value},(result)->
+				if !result
+					closeWindow form
+				else
+					form.getElementsByClassName("error")[0].textContent="ユーザーIDまたはパスワードが違います。"
+		when "newentryform"
 			# 新規登録
-			SS.server.user.newentry {userid: form.elements["
+			#console.log SS.server.user.newentry
+			SS.server.user.newentry {userid: form.elements["userid"].value, password: form.elements["password"].value},(result)->
+				if result
+					form.getElementsByClassName("error")[0].textContent=result
+				else
+					#ウィンドウを閉じる
+					closeWindow form
+#ログインした
+loginuser=(user)->
+	$("#userinfo").empty()
+	$("#templates-upmenu-login").tmpl(user).appendTo("#userinfo")
+	SS.client.app.page "templates-user-profile",user,SS.client.user.profile

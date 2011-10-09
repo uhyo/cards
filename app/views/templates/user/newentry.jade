@@ -1,6 +1,6 @@
-.window.login
+section.window.login
   h1 新規登録
-  form(name="loginform",action="/")
+  form(name="newentryform",action="/")
     p
       label
         ユーザーID:
@@ -11,5 +11,6 @@
         input(size="20",name="password",type="password",required)
     p
       input(type="submit",value="登録")
+    p.error
 
 

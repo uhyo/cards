@@ -1,0 +1,17 @@
+section.profile
+  h1 プロフィール
+  form(action="/")
+    h2 ユーザーID
+    p.userid {{= userid}}
+    h2 ニックネーム
+    p.edit(data-pname="name",data-type="text",data-maxlength="20") {{= name}}
+    h2 メールアドレス
+    p 公開はされません。登録しておくと、パスワードが分からない場合などにサービスが受けられる可能性があります。
+    p.edit(data-pname="email",data-type="email")  {{= email}}
+    h2 コメント
+    p.edit(data-pname="comment",data-type="text",data-maxlength="100") {{= comment}}
+    
+    p
+      input(type="submit",value="変更")
+    
+    
