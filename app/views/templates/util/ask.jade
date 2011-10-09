@@ -1,5 +1,7 @@
 section.window
-  h1 {{= title}}
+  h1
+    {{= title}}
+    input.closer(type="button",value="×",name="no")
   form(name="askform",action="/")
     p {{= message}}
     p

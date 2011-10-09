@@ -56,6 +56,10 @@ evclick=(e)->
 					SS.client.app.page "templates-page-top",null,null
 					$("#userinfo").empty()
 					$("#templates-upmenu-unlogin").tmpl().appendTo("#userinfo")
+	else if $(t).hasClass("closer")
+		win=$(t).closest(".login")
+		closeWindow t if win.length>0
+		
 					
 
 # 戻り値：jQuery

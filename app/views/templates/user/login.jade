@@ -1,6 +1,9 @@
 section.window.login
-  h1 ログイン
   form(name="loginform",action="/")
+    h1
+      ログイン
+      input.closer(type="button",name="cancel",value="×")
+  
     p
       label
         ユーザーID:

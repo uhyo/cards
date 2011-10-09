@@ -10,6 +10,7 @@ exports.start=->
 		inp.name=t.dataset.pname
 		inp.type=t.dataset.type
 		inp.maxlength=t.dataset.maxlength
+		inp.required=true if t.dataset.required
 		np=document.createElement "p"
 		np.appendChild inp
 		t.parentNode?.replaceChild np,t

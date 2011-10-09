@@ -4,7 +4,7 @@ hashlib=require('hashlib');
 exports.actions =
 
 # ログイン
-# cb: ユーザーオブジェクト（成功なら偽）
+# cb: 失敗なら真
 	login: (query,cb)->
 		@session.authenticate 'auth', query, (response)=>
 			console.log response
@@ -22,6 +22,12 @@ exports.actions =
 # 新規登録
 # cb: エラーメッセージ（成功なら偽）
 	newentry: (query,cb)->
+		unless /^\w*$/.test(query.userid)
+			cb "ユーザーIDが不正です"
+			return
+		unless /^\w*$/.test(query.password)
+			cb "パスワードが不正です"
+			return
 		M.users.find({"userid":query.userid}).count (err,count)->
 			if count>0
 				cb "そのユーザーIDは既に使用されています"
@@ -57,6 +63,10 @@ exports.actions =
 				cb {error:"ユーザー認証に失敗しました"}
 				return
 			if query.name?
+				if query.name==""
+					cb {error:"ニックネームを入力して下さい"}
+					return
+					
 				record.name=query.name
 			if query.email?
 				record.email=query.email
