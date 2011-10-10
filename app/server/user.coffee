@@ -7,9 +7,10 @@ exports.actions =
 # cb: 失敗なら真
 	login: (query,cb)->
 		@session.authenticate 'auth', query, (response)=>
-			console.log response
 			if response.success
 				@session.setUserId response.userid
+				@session.attributes={game:"dm",user:response}
+				@session.save ->
 				cb false
 				SS.publish.user response.userid,'login', response
 			else
@@ -41,7 +42,7 @@ exports.actions =
 				
 # ユーザーデータが欲しい
 	userData: (userid,password,cb)->
-		M.users.findOne {"userid":query.userid},(err,record)->
+		M.users.findOne {"userid":userid},(err,record)->
 			if err?
 				cb null
 				return
@@ -72,12 +73,22 @@ exports.actions =
 				record.email=query.email
 			if query.comment?
 				record.comment=query.comment
-			M.users.update {"userid":@session.user_id}, record, {safe:true},(err,count)->
+			M.users.update {"userid":@session.user_id}, record, {safe:true},(err,count)=>
 				if err?
 					cb {error:"プロフィール変更に失敗しました"}
 					return
+				@session.attributes.user=record
+				@session.save ->
 				cb record
-				
+# 遊ぶゲームを変える
+# cb:エラーメッセージ
+	changeGame: (game,cb)->
+		unless SS.server.game.isGame game
+			cb "ゲーム名が無効です"
+			return
+		@session.attributes.game=game
+		@session.save ->
+			cb null
 
 
 #パスワードハッシュ化

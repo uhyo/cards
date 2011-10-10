@@ -11,7 +11,7 @@ body, html
 
 body
   font normal 1em sans-serif
-  vertical-gradient #eee, #fff
+  background-color #ffffe0
 
 p
   margin-bottom 1em
@@ -46,6 +46,9 @@ body > header #userinfo
 
 #userinfo menu
   margin:0
+  display inline-block
+  
+#userinfo menu li
   display inline-block
   
 #userinfo menu button
@@ -89,3 +92,56 @@ body > header #userinfo
   padding 3px 0
 .profile form input:not([type="submit"])
   width 100%
+  
+  
+//game
+card_width = 60px
+card_height= 80px
+
+.game #info, .game #screen
+  display inline-block
+  margin 0
+  
+.game #info
+  width 150px
+  background-color #ffffff
+  vertical-align top
+.game #screen
+  width 600px
+.game .line
+  height card_height
+  margin 10px 0
+.game .line > div
+  display inline-block
+  
+.game
+  width 800px
+
+.game .space,.game .cardsize
+  display inline-block
+  width card_width
+  height card_height
+  margin 0 5px
+  
+.dm #opp-deck,.dm #deck, .dm #opp-chojigen,.dm #chojigen
+  background-color #e0ffff
+.dm #opp-trash,.dm #trash
+  background-color #eaeaea
+.dm #opp-manas,.dm #manas
+  background-color #d9ffe0
+  height card_height
+  width 450px
+  margin 0 5px
+.dm #opp-shields,.dm #shields
+  background-color #e0e0ff
+  height card_height
+  width 450px
+  margin 0 5px
+.dm #opp-field,.dm #field
+  background-color #ffe0e0
+  height card_height
+  width 520px
+  margin 0 5px
+
+.game #chat p
+  margin 0

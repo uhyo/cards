@@ -1,0 +1,33 @@
+.game.dm
+  #info
+    div
+      h1 {{= name}}
+      b#user1 {{= user1name || "---"}}
+      | VS
+      b#user2 {{= user2name || "---"}}
+    #chat
+  #screen
+    .line
+      #opp-hands
+    .line
+      .space
+      #opp-deck.cardsize
+      #opp-manas
+    .line
+      #opp-chojigen.cardsize
+      #opp-trash.cardsize
+      #opp-shields
+    .line
+      .space
+      #opp-field
+    .line
+      #field
+    .line
+      #shields
+      #trash.cardsize
+      #chojigen.cardsize
+    .line
+      #manas
+      #deck.cardsize
+    .line
+      #hands

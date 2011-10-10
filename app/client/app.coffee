@@ -24,19 +24,50 @@ exports.init= ->
 	
 #	SS.server.app.init (mes)-> console.log mes
 
+	# 固定リンク
+	$("a").live "click", (e)->
+		t=e.target
+		e.preventDefault()
+		result=t.href.match(/^(https?:\/\/.+?)?\/user\/(\w+)$/)
+		if result && (!result[1] || result[1]==location.origin)
+			SS.server.user.userData result[2],null,(user)->
+				SS.client.app.page "templates-user-otherprofile",user,null
+			return
+		result=t.href.match(/^(https?:\/\/.+?)?\/room\/(\d+)$/)
+		if result && (!result[1] || result[1]==location.origin)
+			SS.server.room.enter parseInt(result[2]),(room)->
+				if room.error?
+					SS.client.app.message "エラー",room.error,null
+					return
+				SS.client.app.page "templates-game-#{room.type}-game", room, SS.client.game, room
+			return
+
 	# ログイン
-	SS.events.on 'login', (message)->
+	SS.client.app.socket.on 'login', (message)->
 		loginuser message
 	
-exports.page=(templatename,params,pageobj)->
+exports.page=(templatename,params,pageobj,param)->
 	cdom=$("#content").get(0)
 	jQuery.data(cdom,"end")?()
 	jQuery.removeData cdom,"end"
 	$("#content").empty()
 	$("##{templatename}").tmpl(params).appendTo("#content")
 	if pageobj
-		pageobj.start()
+		pageobj.start(param)
 		jQuery.data cdom, "end", pageobj.end
+
+#ソケット関連
+exports.socket=
+	evs: {},
+	init:->
+	on:(mesname,func)->
+		unless @evs[mesname]?
+			SS.events.on mesname,(msg,channel_name)=>
+				@evs[mesname]?(msg,channel_name)
+		@evs[mesname]=func
+	off:(mesname)->
+		@evs[mesname]=null
+			
 	
 evclick=(e)->
 	t=e.target
@@ -52,10 +83,17 @@ evclick=(e)->
 			when "logout"
 				#ログアウト
 				SS.server.user.logout (result)->
-					console.log result
 					SS.client.app.page "templates-page-top",null,null
 					$("#userinfo").empty()
 					$("#templates-upmenu-unlogin").tmpl().appendTo("#userinfo")
+			when "game_dm","game_vg"
+				#ゲーム切り替え
+				SS.server.user.changeGame t.name.slice(5),(result)->
+					if result?
+						SS.client.util.message "エラー",result
+			when "rooms"
+				#ルーム
+				SS.client.app.page "templates-game-room",null,SS.client.room
 	else if $(t).hasClass("closer")
 		win=$(t).closest(".login")
 		closeWindow t if win.length>0

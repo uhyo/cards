@@ -21,7 +21,7 @@ exports.start=->
 		q=SS.client.util.formQuery je.target
 		q.userid=$("p.userid").get(0).textContent
 		console.log q
-		SS.client.util.prompt "プロフィール","パスワードを入力して下さい","password",(result)->
+		SS.client.util.prompt "プロフィール","パスワードを入力して下さい",{type:"password"},(result)->
 			if result
 				q.password=result
 				console.log q

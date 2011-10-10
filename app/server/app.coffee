@@ -11,8 +11,8 @@ dbinit= ->
     cols_count= (->
       count=0
       return (cb)->
-        if ++count>=1
-          console.log "Mongodb Started"
+        if ++count>=2
+          console.log "Mongodb Connected"
     )()
 
     DB.open (err, client)->
@@ -28,6 +28,12 @@ dbinit= ->
             console.log err
             throw err
           M.users=col
+          cols_count()
+        DB.collection "rooms", (err,col)->
+          if err?
+            console.log err
+            throw err
+          M.rooms=col
           cols_count()
 
 dbinit()

@@ -1,4 +1,14 @@
 span.username {{= userid}}
-menu
-  button(type="button",name="logout") ログアウト
+menu(type="toolbar")
+  li
+    button(type="button",name="logout") ログアウト
+  li
+    menu(label="ゲーム")
+      li
+        button(type="button",name="game_dm") DM
+      li
+        button(type="button",name="game_vg") VG
+  li
+    button(type="button",name="rooms") ルーム
+    
 

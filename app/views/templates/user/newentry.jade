@@ -6,11 +6,11 @@ section.window.login
     p
       label
         ユーザーID:
-        input.getfocus(name="userid",size=20,required,pattern="\w+",title="ユーザーIDは半角英数字とアンダーバーのみ使用できます。")
+        input.getfocus(name="userid",size=20,required,pattern="\\w+",title="ユーザーIDは半角英数字とアンダーバーのみ使用できます。")
     p
       label
         パスワード:
-        input(size="20",name="password",type="password",required,pattern="\w+",title="パスワードは半角英数字とアンダーバーのみ使用できます。")
+        input(size="20",name="password",type="password",required,pattern="\\w+",title="パスワードは半角英数字とアンダーバーのみ使用できます。")
     p
       input(type="submit",value="登録")
     p.error

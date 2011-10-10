@@ -25,10 +25,11 @@ exports.ask=(title,message,cb)->
 			cb false
 			closeWindow t
 #String / null
-exports.prompt=(title,message,type="text",cb)->
+exports.prompt=(title,message,opt,cb)->
 	win = showWindow "templates-util-prompt",{title:title,message:message}
 	inp=win.find("input.prompt").get(0)
-	inp.type=type
+	for opv in opt
+		input[opv]=opt[opv]
 	win.submit (je)-> je.preventDefault()
 	win.click (je)->
 		t=je.target

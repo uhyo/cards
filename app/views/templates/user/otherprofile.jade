@@ -1,0 +1,10 @@
+section.profile
+  h1 {{= name}}のプロフィール
+  form(action="/")
+    h2 ユーザーID
+    p.userid {{= userid}}
+    h2 コメント
+    p.edit(data-pname="comment",data-type="text",data-maxlength="100") {{= comment}}
+
+    
+    
